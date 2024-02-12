@@ -1,9 +1,10 @@
 import serial
 
-SERIAL_PORT = '/dev/ttyUSB0'  # must be changed with a different configuration
+# SERIAL_PORT = '/dev/ttyUSB0'  # must be changed with a different configuration
+SERIAL_PORT = '/dev/tty.usbserial-140'
 
 
-class SensorAndCamera:
+class ArduinoSensors:
     # ultrasonic sensors
     _right_sensor: float
     _left_sensor: float
@@ -39,3 +40,10 @@ class SensorAndCamera:
 
     def get_orientation(self):
         return self._orientation
+
+
+if __name__ == "__main__":
+    sensors = ArduinoSensors()
+    print(sensors.get_right_sensor())
+    print(sensors.get_left_sensor())
+    print(sensors.get_orientation())
