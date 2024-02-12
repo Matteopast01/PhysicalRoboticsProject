@@ -1,7 +1,7 @@
 import serial
 
-# SERIAL_PORT = '/dev/ttyUSB0'  # must be changed with a different configuration
-SERIAL_PORT = '/dev/tty.usbserial-140'
+SERIAL_PORT = '/dev/ttyUSB0'  # on Raspberry pi USB port top right
+# SERIAL_PORT = '/dev/tty.usbserial-140' # on Giacomo Mac
 
 
 class ArduinoSensors:
