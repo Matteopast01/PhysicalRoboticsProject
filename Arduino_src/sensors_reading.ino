@@ -36,6 +36,4 @@ void loop() {
   Serial.print(sonarsensor(trigPinRight, echoPinRight));
   Serial.print("#");
   Serial.println(sonarsensor(trigPinLeft, echoPinLeft));
-
-  delay(100); // Aggiungi un ritardo tra le letture
 }

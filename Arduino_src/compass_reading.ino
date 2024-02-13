@@ -16,5 +16,4 @@ void loop() {
       }
     // Ritorna i gradi
     Serial.println(degree);
-    delay(100);
 }
