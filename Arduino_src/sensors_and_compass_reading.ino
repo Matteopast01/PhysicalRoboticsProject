@@ -53,6 +53,4 @@ void loop() {
   // Stampa i gradi
   Serial.print("#");
   Serial.println(degree);
-
-  delay(100); // Aggiungi un ritardo tra le letture
 }
