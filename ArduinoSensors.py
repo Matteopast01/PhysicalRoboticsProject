@@ -1,7 +1,8 @@
 import serial
+from time import sleep
 
-SERIAL_PORT = '/dev/ttyUSB0'  # on Raspberry pi USB port top right
-# SERIAL_PORT = '/dev/tty.usbserial-140' # on Giacomo Mac
+SERIAL_PORT = '/dev/ttyUSB0'  # must be changed with a different configuration
+# SERIAL_PORT = '/dev/tty.usbserial-140'
 
 
 class ArduinoSensors:
@@ -23,14 +24,18 @@ class ArduinoSensors:
         self._orientation = orientation
 
     def update(self):
-        # read from sensors
-        ser = serial.Serial(SERIAL_PORT, 9600)
         # line read
-        line = ser.readline().decode('utf-8').strip()
+        my_serial = serial.Serial(SERIAL_PORT, 9600)
+        byte = ""
+        while byte != b"\n" :
+            byte = my_serial.read(1)
+        line = my_serial.readline()
+        line = line.decode('utf-8').strip()
         # splitting
         values_list = line[1:].split("#")
         # setters
         self._set_values(float(values_list[0]), float(values_list[1]), float(values_list[2]))
+        my_serial.close()
 
     def get_right_sensor(self):
         return self._right_sensor
@@ -44,6 +49,9 @@ class ArduinoSensors:
 
 if __name__ == "__main__":
     sensors = ArduinoSensors()
-    print(sensors.get_right_sensor())
-    print(sensors.get_left_sensor())
-    print(sensors.get_orientation())
+    while True:
+        sensors.update()
+        print("right: ",sensors.get_right_sensor())
+        print("left: ",sensors.get_left_sensor())
+        print("orientation: ",sensors.get_orientation())
+        sleep(1)
