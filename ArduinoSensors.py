@@ -1,8 +1,8 @@
 import serial
 from time import sleep
 
-SERIAL_PORT = '/dev/ttyUSB0'  # must be changed with a different configuration
-# SERIAL_PORT = '/dev/tty.usbserial-140'
+# SERIAL_PORT = '/dev/ttyUSB0'              # Raspberry
+SERIAL_PORT = '/dev/tty.usbserial-140'      # mac di Giacomo
 
 
 class ArduinoSensors:
@@ -27,7 +27,7 @@ class ArduinoSensors:
         # line read
         my_serial = serial.Serial(SERIAL_PORT, 9600)
         byte = ""
-        while byte != b"\n" :
+        while byte != b"\n":
             byte = my_serial.read(1)
         line = my_serial.readline()
         line = line.decode('utf-8').strip()
