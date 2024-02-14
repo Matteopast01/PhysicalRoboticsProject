@@ -19,6 +19,9 @@ void setup() {
 
   // Per la bussola
   compass.init();
+
+  compass.setCalibrationOffsets(-197.00, -1316.00, -1411.00);
+  compass.setCalibrationScales(1.64, 0.87, 0.81);
 }
 
 // Funzione per il sensore ultrasonico

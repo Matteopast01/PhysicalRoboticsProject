@@ -13,25 +13,8 @@ Release under the GNU General Public License v3
 
 
 
-
-
-
-
-
-
-
-
                                           UTILITY SKETCH
                                     NO SERVICABLE PARTS BELOW
-
-
-
-
-
-
-
-
-
 
 
 
