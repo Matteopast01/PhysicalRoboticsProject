@@ -12,6 +12,9 @@ Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
 /* Update this with the correct SLP for accurate altitude measurements */
 float seaLevelPressure = SENSORS_PRESSURE_SEALEVELHPA;
 
+// Global variable for initial angle
+float initialAngle;
+
 /**************************************************************************/
 /*!
     @brief  Initialises all the sensors used by this example
@@ -35,35 +38,13 @@ void initImuSensors()
 
 /**************************************************************************/
 
-
-
 // Pin per i sensori ultrasonici
 #define echoPinRight 4  // filo verde
 #define trigPinRight 3  // filo lilla
 #define echoPinLeft 8   // filo verde
 #define trigPinLeft 7   // filo lilla
 
-
-
-
 /**************************************************************************/
-void setup(void)
-{
-  Serial.begin(9600);
-
-  pinMode(echoPinRight, INPUT);
-  pinMode(trigPinRight, OUTPUT);
-  pinMode(echoPinLeft, INPUT);
-  pinMode(trigPinLeft, OUTPUT);
-
-
-  
-  /* Initialise the sensors */
-  initImuSensors();
-
-  float initialAngle = imu_orientation_reading()
-}
-
 
 // Funzione per il sensore ultrasonico
 long sonarsensor(int triggerPin, int echoPin) {
@@ -80,28 +61,44 @@ long sonarsensor(int triggerPin, int echoPin) {
   return distance;
 }
 
+/**************************************************************************/
 
-float imu_orientation_reading(){
-sensors_event_t accel_event;
+float imu_orientation_reading() {
+  sensors_event_t accel_event;
   sensors_event_t mag_event;
   sensors_vec_t   orientation;
 
   /* Calculate pitch and roll from the raw accelerometer data */
   accel.getEvent(&accel_event);
 
-
   /* Calculate the heading using the magnetometer */
   mag.getEvent(&mag_event);
-  if (dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation))
-  {
+  if (dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation)) {
     /* 'orientation' should have valid .heading data now */
-
-    return orientation.heading;
-
+    float angle = orientation.heading - initialAngle;
+    if (angle < 0) {
+      angle += 360; // Aggiungi 360 gradi per ottenere un valore positivo
+    }
+    return angle;
   }
-
-
 }
+
+void setup(void)
+{
+  Serial.begin(9600);
+
+  pinMode(echoPinRight, INPUT);
+  pinMode(trigPinRight, OUTPUT);
+  pinMode(echoPinLeft, INPUT);
+  pinMode(trigPinLeft, OUTPUT);
+
+  /* Initialise the sensors */
+  initImuSensors();
+
+  // Initialize initial angle
+  initialAngle = imu_orientation_reading();
+}
+
 /**************************************************************************/
 /*!
     @brief  Constantly check the roll/pitch/heading/altitude/temperature
@@ -109,7 +106,6 @@ sensors_event_t accel_event;
 /**************************************************************************/
 void loop(void)
 {
-  
   Serial.print("#");
   Serial.print(sonarsensor(trigPinRight, echoPinRight));
   Serial.print("#");
@@ -117,6 +113,4 @@ void loop(void)
   // Stampa i gradi
   Serial.print("#");
   Serial.println(imu_orientation_reading());
-
-  
 }
