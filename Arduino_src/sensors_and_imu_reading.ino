@@ -61,11 +61,47 @@ void setup(void)
   /* Initialise the sensors */
   initImuSensors();
 
-
+  float initialAngle = imu_orientation_reading()
 }
 
 
+// Funzione per il sensore ultrasonico
+long sonarsensor(int triggerPin, int echoPin) {
+  long distance = 0;
+  digitalWrite(triggerPin, LOW);
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+  long times = pulseIn(echoPin, HIGH);
+  if (times < 38000) {
+    distance = 0.034 * times / 2;
+    return distance;
+  }
+  return distance;
+}
 
+
+float imu_orientation_reading(){
+sensors_event_t accel_event;
+  sensors_event_t mag_event;
+  sensors_vec_t   orientation;
+
+  /* Calculate pitch and roll from the raw accelerometer data */
+  accel.getEvent(&accel_event);
+
+
+  /* Calculate the heading using the magnetometer */
+  mag.getEvent(&mag_event);
+  if (dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation))
+  {
+    /* 'orientation' should have valid .heading data now */
+
+    return orientation.heading;
+
+  }
+
+
+}
 /**************************************************************************/
 /*!
     @brief  Constantly check the roll/pitch/heading/altitude/temperature
