@@ -35,7 +35,6 @@ class GUI:
         self.stop_button.config(state=tk.NORMAL)
         messagebox.showinfo("Message", "Simulation will start shortly!")
         subprocess.Popen(["bash", "robot_start.sh"])
-        print("qua ci sto")
         config = ReadConfig()
         ip = config.read_data("IP_RASPBERRY")
         r = requests.get(f'http://{ip}:5008/start')
