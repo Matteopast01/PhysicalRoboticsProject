@@ -15,8 +15,7 @@ class GUI:
 
         # Load and resize the image with antialiasing
         image = Image.open("robot.jpg")
-        image = image.rotate(180)
-        image = image.resize((800, 400), Image.LANCZOS)  # Use Image.LANCZOS instead of Image.ANTIALIAS
+        image = image.resize((600, 400), Image.LANCZOS)  # Use Image.LANCZOS instead of Image.ANTIALIAS
         photo = ImageTk.PhotoImage(image)
         self.label = tk.Label(master, image=photo)
         self.label.image = photo  # Avoid garbage collection
